@@ -13,7 +13,7 @@ Corporate marketing website for J&A Freight Systems, a Chicago-based freight log
 | Fonts | Barlow Condensed (headings) + Barlow (body) via Google Fonts |
 | Map | MapLibre GL JS 4.7.1 (service-reach map on the Home page) |
 | Forms | Netlify Forms (submissions collected in Netlify dashboard) |
-| Deployment | GitHub Pages (primary) or Netlify (alternative) |
+| Deployment | Netlify, auto-deploys from `main` of github.com/jandafreight/J-A-Freight-Website |
 
 ---
 
@@ -63,9 +63,6 @@ ja-freight-repo/              ← Repo root (this is what gets deployed)
 │   ├── *.png / *.jpg         ← Logos, headshots, illustrations
 │   ├── *.svg                 ← Vector assets (e.g. LogoFooterYellow.svg)
 │   └── *.mp4                 ← Background / hero videos
-├── .github/
-│   └── workflows/
-│       └── deploy.yml        ← GitHub Actions auto-deploy to GitHub Pages
 ├── .gitignore
 ├── netlify.toml              ← Netlify deployment config
 └── README.md                 ← This file
@@ -102,23 +99,18 @@ Replace the `.mp4` file in `assets/` with the new file using the **same filename
 
 ## How To Deploy
 
-### GitHub Pages (primary — auto-deploys on push)
+The live site (https://jandafreight.com) is hosted on Netlify and linked to the
+`jandafreight/J-A-Freight-Website` GitHub repository. Every push to `main`
+triggers a production deploy automatically; there is no build step.
 
-The site deploys automatically via GitHub Actions whenever you push to `main`. No manual steps needed after initial setup.
+**Normal workflow:**
+1. Create a branch, make your changes, and open a pull request against `main`
+2. Netlify builds a deploy preview for the PR (link appears in the PR checks) — share it for review
+3. Merge to `main` — Netlify publishes to jandafreight.com within about a minute
 
-**First-time setup:**
-1. Push the repo to GitHub
-2. Go to **Settings → Pages → Source** and select **GitHub Actions**
-3. Push any commit to `main` — the workflow runs and publishes the site
-
-Live URL: `https://<your-github-username>.github.io/<repo-name>/`
-
-### Netlify (alternative)
-
-1. Log in to [netlify.com](https://netlify.com) and click **Add new site → Import an existing project**
-2. Connect your GitHub repo
-3. Netlify reads `netlify.toml` automatically — no settings to change
-4. Click **Deploy site**
+`netlify.toml` holds the publish folder and the custom 404 redirect; everything
+else (domain, SSL, form notifications, redirects in `_redirects`) is managed in
+the Netlify dashboard or in this repo.
 
 Netlify also collects form submissions (see **Form Submissions** below).
 
@@ -173,6 +165,6 @@ Brand colors: Navy `#0B2138` · Gold `#FFC20D`
 
 ## Local Development Notes
 
-- **Videos** (`assets/*.mp4`) are large files (~10 MB each). They are tracked in git but excluded from the build artifact size limit on GitHub Pages (100 MB max per repo is the soft limit).
+- **Videos** (`assets/*.mp4`) are large files (~10 MB each). They are tracked in git and deployed as-is by Netlify.
 - **No npm / Node.js** is required. The site has zero dependencies that need installing.
 - **MapLibre GL JS** is loaded from CDN (see `<head>` in `index.html`). An internet connection is required to render the service-reach map.
